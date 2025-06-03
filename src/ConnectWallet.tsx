@@ -2,11 +2,11 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import type { ReactElement } from "react";
 
 export function ConnectWalletSolana(): ReactElement {
-  const { publicKey, wallets, select } = useWallet();
+  const { publicKey, connected, wallets, select, disconnect } = useWallet();
 
   return (
     <>
-      Connected with {publicKey?.toBase58()}
+      Connected with {connected ? publicKey?.toBase58() : "No wallet"}
       {wallets
         .filter(
           (wallet) =>
@@ -20,10 +20,11 @@ export function ConnectWalletSolana(): ReactElement {
                 select(wallet.adapter.name);
               }}
             >
-              {wallet.adapter.name}
+              Connect with {wallet.adapter.name}
             </button>
           </div>
         ))}
+      {connected && <button onClick={() => disconnect()}>Disconnect</button>}
     </>
   );
 }
